@@ -43,7 +43,8 @@ public class menuRunner implements CommandLineRunner {
             System.out.println("3. Visualizza tutte le prenotazioni");
             System.out.println("4. Trova postazioni disponibili per una data");
             System.out.println("5. Elimina una prenotazione");
-            System.out.println("6. Esci");
+            System.out.println("6 trova postazioni in base alla citta e tipo");
+            System.out.println("7. Esci");
             System.out.print("Seleziona un'opzione: ");
 
             int scelta = scanner.nextInt();
@@ -66,6 +67,9 @@ public class menuRunner implements CommandLineRunner {
                     eliminaPrenotazione(scanner);
                     break;
                 case 6:
+                    findPostazioniByCittaAndTipo(scanner);
+                    break;
+                case 7:
                     running = false;
                     System.out.println("Arrivederci!");
                     break;
@@ -135,6 +139,32 @@ public class menuRunner implements CommandLineRunner {
 
             postazioneService.findDisponibiliByDate(data).forEach(System.out::println);
     }
+
+    private void findPostazioniByCittaAndTipo(Scanner scanner) {
+        System.out.println("Inserisci città:");
+        String citta = scanner.nextLine();
+
+        System.out.println("Inserisci tipo (PRIVATO, OPENSPACE, SALA_RIUNIONI):");
+        Tipo tipo;
+        try {
+            tipo = Tipo.valueOf(scanner.nextLine().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Tipo non valido. Assicurati di usare PRIVATO, OPENSPACE, o SALA_RIUNIONI.");
+            return;
+        }
+
+
+        List<Postazione> postazioni = postazioneService.findPostazioniByCittaAndTipo(citta, tipo);
+
+        if (postazioni.isEmpty()) {
+            System.out.println("Nessuna postazione trovata per la città e il tipo specificati.");
+        } else {
+            postazioni.forEach(System.out::println);
+        }
+    }
+
+
+
 
 
     private void eliminaPrenotazione(Scanner scanner) {

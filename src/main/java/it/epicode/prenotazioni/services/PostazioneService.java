@@ -30,10 +30,10 @@ public class PostazioneService {
 
         public List<Postazione> findDisponibiliByDate(LocalDate data) {
         return postazioneRepo.findDisponibili(data);
-    }
+        }
 
     public List<Postazione> findPostazioniByCittaAndTipo(String citta, Tipo tipo) {
-       return postazioneRepo.findPostazioniByCittaAndTipo(citta, tipo);
+        return postazioneRepo.findPostazioniByCittaAndTipo(citta, tipo);
     }
 
     public List<Postazione> findDisponibili(String citta, Tipo tipo, LocalDate data) {
