@@ -43,8 +43,9 @@ public class menuRunner implements CommandLineRunner {
             System.out.println("3. Visualizza tutte le prenotazioni");
             System.out.println("4. Trova postazioni disponibili per una data");
             System.out.println("5. Elimina una prenotazione");
-            System.out.println("6 trova postazioni in base alla citta e tipo");
-            System.out.println("7. Esci");
+            System.out.println("6 Trova postazioni in base alla citta e tipo");
+            System.out.println("7 Filtra per data citta e tipo");
+            System.out.println("8. Esci");
             System.out.print("Seleziona un'opzione: ");
 
             int scelta = scanner.nextInt();
@@ -70,6 +71,9 @@ public class menuRunner implements CommandLineRunner {
                     findPostazioniByCittaAndTipo(scanner);
                     break;
                 case 7:
+                    findPostazioniDisp(scanner);
+                    break;
+                case 8:
                     running = false;
                     System.out.println("Arrivederci!");
                     break;
@@ -162,6 +166,40 @@ public class menuRunner implements CommandLineRunner {
             postazioni.forEach(System.out::println);
         }
     }
+
+
+        private void findPostazioniDisp(Scanner scanner) {
+            System.out.println("Inserisci città:");
+            String citta = scanner.nextLine();
+
+            System.out.println("Inserisci tipo (PRIVATO, OPENSPACE, SALA_RIUNIONI):");
+            Tipo tipo;
+            try {
+                tipo = Tipo.valueOf(scanner.nextLine().toUpperCase());
+            } catch (IllegalArgumentException e) {
+                System.out.println("Tipo non valido. Assicurati di usare PRIVATO, OPENSPACE, o SALA_RIUNIONI.");
+                return;
+            }
+
+            System.out.println("Inserisci data desiderata (yyyy-MM-dd):");
+            LocalDate data;
+            try {
+                data = LocalDate.parse(scanner.nextLine());
+            } catch (Exception e) {
+                System.out.println("Formato data non valido. Assicurati di usare yyyy-MM-dd.");
+                return;
+            }
+
+            List<Postazione> postazioni = postazioneService.findDisponibili(citta, tipo, data);
+
+            if (postazioni.isEmpty()) {
+                System.out.println("Nessuna postazione disponibile per la città, il tipo e la data specificati.");
+            } else {
+                postazioni.forEach(System.out::println);
+            }
+        }
+
+
 
 
 

@@ -21,11 +21,11 @@ public interface PostazioneRepo extends JpaRepository<Postazione, Long> {
     @Query("SELECT p FROM Postazione p " +
             "JOIN p.edificio e " +
             "WHERE e.citta = :citta " +
-            "AND p.tipo = :tipo " +  // ora tipo è di tipo Tipo
+            "AND p.tipo = :tipo " +
             "AND p.id NOT IN (SELECT pr.postazione.id FROM Prenotazione pr WHERE pr.dataPrenotazione = :data)")
     List<Postazione> findAvailablePostazioniByCittaAndTipo(
             @Param("citta") String citta,
-            @Param("tipo") Tipo tipo,  // accetta tipo come Tipo
+            @Param("tipo") Tipo tipo,
             @Param("data") LocalDate data);
 
 }
